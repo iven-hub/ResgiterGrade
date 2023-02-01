@@ -29,21 +29,21 @@ public class RegisterActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_add);
         edtid = findViewById(R.id.edit_id);
         btnCancel = findViewById(R.id.btn_cancel);
-
+        //cria um objeto SQLiteHelper e inicializa db
         dbHelper = new  SQLiteHelper(this);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //id do usuário e converte-o em um inteiro O método get é usado para obter o texto do EditText
+                // como uma string e, em seguida, é convertido em um inteiro.
                 int id = Integer.parseInt(edtid.getText().toString());
                 String nome = edtName.getText().toString();
-                float grade1 = Float.parseFloat(edtnota1.getText().toString());
+                float grade1 = Float.parseFloat(edtnota1.getText().toString());//converte para valor flutuante
                 float grade2 = Float.parseFloat(edtnota2.getText().toString());
+                float media = (grade1 + grade2 ) / 2;//media
 
-
-                float media = (grade1 + grade2 ) / 2;
-
-                //Save student information to database
+                ////Chama o método para adicionar o aluno na base de dados
                 Student student = new Student(id,nome, grade1, grade2, media);
                 dbHelper.insertData(student);
                 Toast.makeText(RegisterActivity.this, nome + " successfully added with average grade of " + media, Toast.LENGTH_SHORT).show();

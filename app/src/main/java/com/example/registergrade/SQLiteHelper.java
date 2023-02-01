@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -17,13 +16,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String COLUMN_GRADE1 = "grade1";
     private static final String COLUMN_GRADE2 = "grade2";
     private static final String COLUMN_MEDIA = "MEDIA";
-
+//constr. context recursos do aplicativo, como o banco de dados. Se a base de dados será criada uma nova base de dados.
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    //Chamado quando o banco de dados é criado pela primeira vez. É aqui que deve acontecer a criação das tabelas
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {//e o preenchimento inicial das tabelas
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_NAME + " TEXT,"
@@ -34,14 +34,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    //atualizar tabela se v+
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
-
+//responsável por inserir dados de um objeto Student na base /escrever/armazena valores/put
     public void insertData (Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();//ContentValue utiliza os dados do objeto Student
+        values.put(COLUMN_ID, student.getId());
         values.put(COLUMN_NAME, student.getNome());
         values.put(COLUMN_GRADE1, student.getNota1());
         values.put(COLUMN_GRADE2, student.getNota2());
@@ -50,31 +52,35 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Cursor getAllData() {
+    public Cursor getAllData() {//get all data passa condition
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
 
-    public ArrayList<Student> getApprovedStudents() {
-        ArrayList<Student> students = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE media >= 12.0", null);
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(0);
+    public ArrayList<Student> getApprovedStudents() {//lista dos alunos aprovados media>12
+        ArrayList<Student> studentsAprov = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();//abrir conecao com db modo leitura
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE media >= 12.0", null);//consulta sql das media guardar result no cursor
+
+
+        if (cursor.moveToFirst()) {//para verificar se há pelo menos um resultado na consulta... primeiro dado
+            do {//extraimos resultado do cursor
+                int id = cursor.getInt(0);//ref colun
                 String name = cursor.getString(1);
                 float grade1 = cursor.getFloat(2);
                 float grade2 = cursor.getFloat(3);
                 float media = cursor.getFloat(4);
-                students.add(new Student(id, name, grade1, grade2, media));
+                //Criamos um objeto Student com esses dados e o adicionamos à lista studentsaprov
+                studentsAprov.add(new Student(id, name, grade1, grade2, media));
+
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return students;
+        return studentsAprov;//retorna a lista
     }
 
     public ArrayList<Student> getExamStudents() {
-        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<Student> studentsExam = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE media  < 12.0", null);
         if (cursor.moveToFirst()) {
@@ -84,17 +90,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 float grade1 = cursor.getFloat(2);
                 float grade2 = cursor.getFloat(3);
                 float media = cursor.getFloat(4);
-                students.add(new Student(id, name, grade1, grade2, media));
+                studentsExam.add(new Student(id, name, grade1, grade2, media));
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return students;
+        return studentsExam;
     }
-
-    public void deleteStudent(Student student) {
+    //Este código é um método que deleta um registro de estudante da base
+    public void deletedata(int id) {
+        //Ele usa o ID do estudante como chave para localizar e excluir o registro correto.
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(student.getId())});
+        db.delete(TABLE_NAME, COLUMN_ID + " = ?",
+                new String[] { String.valueOf(id) });
         db.close();
+//        db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(student.getId())});
+//        db.close();
     }
 }
 

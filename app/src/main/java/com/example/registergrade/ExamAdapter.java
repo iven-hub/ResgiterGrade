@@ -10,18 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+//extender recycle adpater defenir um classe interna para no adapter do nosso recycle
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder>{
     private Context context;
     private ArrayList<Student> studentList;
 
-    public ExamAdapter( Context context,ArrayList<Student> studentList) {
-        this.context = context;
+    public ExamAdapter( Context context,ArrayList<Student> studentList) {//apanhar os valores das nossas variaveis
+        this.context = context;//inflar layout
         this.studentList = studentList;
     }
 
     @NonNull
     @Override
+    //vamos inflar nosso layout e dar aparencia a cada um das nossas coluna
     public ExamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.aluno, parent, false);
         return new ExamAdapter.ExamViewHolder(view);
@@ -29,6 +30,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ExamViewHolder holder, int position) {
+        //ter acesso aos dados
         Student student = studentList.get(position);
         holder.student_id.setText(student.getNome());
         holder.grade_id.setText(String.valueOf(student.getMedia()));
@@ -42,8 +44,9 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
         return 0;
     }
 
-
+//ela é responsável por armazenar as referências das visões da linha de item da lista de estudantes no exame.
     class ExamViewHolder extends RecyclerView.ViewHolder {
+        //esqueleto no nosso recycle vai apanhar as views do nosso recycle-view layout tipo um one create metodo
         TextView student_id, grade_id;
 
         public ExamViewHolder(@NonNull View itemView) {

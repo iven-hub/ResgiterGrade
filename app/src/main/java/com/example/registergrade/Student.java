@@ -7,6 +7,7 @@ public class Student {
     private float nota2;
     private float media;
 
+    //recebe todos os valores como parâmetros
     public Student(int id, String nome, float nota1, float nota2, float media) {
         this.id = id;
         this.nome = nome;
@@ -15,15 +16,10 @@ public class Student {
         this.media = media;
     }
 
-    public Student(){
-        id = 0;
-        nome = "";
-        nota1 = 0;
-        nota2 = 0;
-        media = 0;
-    }
 
-    public int getId() {
+
+//acessar o valor de cada atributo
+    public Integer getId() {
         return id;
     }
 

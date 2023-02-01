@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/student_id"
-        android:layout_width="229dp"
+        android:layout_width="222dp"
         android:layout_height="69dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
