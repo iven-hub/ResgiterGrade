@@ -97,7 +97,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return studentsExam;
     }
     //Este código é um método que deleta um registro de estudante da base
-    public void deletedata(int id) {
+    public long deletedata(int id) {
         //Ele usa o ID do estudante como chave para localizar e excluir o registro correto.
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + " = ?",
@@ -105,6 +105,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
 //        db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(student.getId())});
 //        db.close();
+        return 0;
     }
 }
 

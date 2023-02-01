@@ -1,6 +1,9 @@
 package com.example.registergrade;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,7 +56,18 @@ public class RegisterActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                AlertDialog.Builder cance = new AlertDialog.Builder(RegisterActivity.this);
+                cance.setTitle("Deseja mesmo cancelar");
+                cance.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), "Foi cancelado com sucesso", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    }
+                });
+                cance.setPositiveButton("Continuar", null);
+                cance.setCancelable(false);//click fora
+                cance.create().show(); //mostrar o alert
             }
         });
     }
