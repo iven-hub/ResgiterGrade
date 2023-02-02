@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ExamActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private ExamAdapter adapter;
+    private StateAdapter adapter;
     private ArrayList<Student> studentList;
     private SQLiteHelper dbHelper;
 
@@ -21,7 +21,7 @@ public class ExamActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.exam_id);
         dbHelper = new SQLiteHelper(this);// cria um objeto SQLiteHelper e inicializa
         studentList = dbHelper.getExamStudents();//e pega a lista de estudantes aprovados usando o método getApprovedStudents.
-        adapter = new ExamAdapter(this,studentList);//passar lista de estudantes
+        adapter = new StateAdapter(this, studentList);//passar lista de estudantes
         recyclerView.setAdapter(adapter);//apanhar informacoes e layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -17,7 +17,6 @@ public class Student {
     }
 
 
-
 //acessar o valor de cada atributo
     public Integer getId() {
         return id;
